@@ -1,15 +1,18 @@
-import logger from '../logger'
 import Operator, { OperatorLogger } from '@dot-i/k8s-operator'
 import cron, { ScheduledTask } from 'node-cron'
+import { SecretsManager } from './secrets-manager';
 
-import config from '../config'
+import logger from '~/logger'
+import config from '~/config'
 
 export class ClustersController extends Operator {
 
     private cron: ScheduledTask;
+    private secretsManager: SecretsManager;
 
     constructor(logger: OperatorLogger) {
         super(logger);
+        this.secretsManager = new SecretsManager()
         this.cron = cron.schedule(config.cron.expression, this.processing, { runOnInit: false, scheduled: false })
     }
 
@@ -26,5 +29,11 @@ export class ClustersController extends Operator {
 
     async processing() {
         logger.info('Syncing clusters...')
+        try {
+            // const t = this.secretsManager;
+            // const secrets = await this.secretsManager.getSecrets()
+        } catch (error) {
+            logger.error(error)
+        } 
     }
 }

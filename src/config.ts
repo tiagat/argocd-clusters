@@ -2,7 +2,6 @@ import path from 'node:path';
 import { readFileSync } from 'node:fs';
 import { config, parse } from 'dotenv';
 import { validate } from 'node-cron';
-
 import type { Level } from 'pino';
 
 config({ path: path.join(__dirname, '..', process.env['NODE_ENV'] === 'test' ? '.env.test' : '.env') });
@@ -21,5 +20,11 @@ export default {
     },
     cron: {
         expression: cronExpression,
+    },
+    aws: {
+        region: process.env['AWS_REGION']!,
+        secrets: {
+            path: process.env['AWS_SECRETS_PATH']!,
+        }
     }
 }
