@@ -1,7 +1,7 @@
 import Operator, { OperatorLogger } from '@dot-i/k8s-operator'
 import cron, { ScheduledTask } from 'node-cron'
-import { AWSSecretManager } from './common/aws-secrets-manager';
-import { KubernetesSecrets } from './common/kubernetes-secrets';
+import { SecretManager } from './common/secrets-manager';
+import { Kubernetes } from './common/kubernetes';
 
 import logger from '~/logger'
 import config from '~/config'
@@ -9,13 +9,13 @@ import config from '~/config'
 export class Controller extends Operator {
 
     private cron: ScheduledTask;
-    private secretsManager: AWSSecretManager;
-    private kubernetesSecrets: KubernetesSecrets;
+    private secretsManager: SecretManager;
+    private kubernetes: Kubernetes;
 
     constructor(logger: OperatorLogger) {
         super(logger);
-        this.secretsManager = new AWSSecretManager()
-        this.kubernetesSecrets = new KubernetesSecrets()
+        this.secretsManager = new SecretManager()
+        this.kubernetes = new Kubernetes()
         this.cron = cron.schedule(
             config.cron.expression, 
             this.processing.bind(this), 
@@ -38,7 +38,7 @@ export class Controller extends Operator {
     async processing() {
         try {
             const awsSecrets = this.secretsManager.getClusterSecrets()
-            const k8sSecrets = this.kubernetesSecrets.getClusterSecrets()
+            const k8sSecrets = this.kubernetes.getClusterSecrets()
         } catch (error) {
             logger.error(error)
         } 

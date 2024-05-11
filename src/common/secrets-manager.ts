@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { SecretsManagerClient, ListSecretsCommand, ListSecretsCommandInput, GetSecretValueCommand, SecretListEntry } from "@aws-sdk/client-secrets-manager";
 import { plainToInstance } from 'class-transformer'
 import { validate } from 'class-validator';
-import { ClusterSecret, ClusterMetadata } from './aws-secrets-interface';
+import { ClusterSecret, ClusterMetadata } from './interfaces';
 
 import config from '~/config';
 import logger from '~/logger';
@@ -18,7 +18,7 @@ const commandParams: ListSecretsCommandInput = {
     ]
 }
 
-export class AWSSecretManager {
+export class SecretManager {
 
     private client = new SecretsManagerClient({ region: config.aws.region });
     private command = new ListSecretsCommand(commandParams);

@@ -26,5 +26,8 @@ export default {
         secrets: {
             path: process.env['AWS_SECRETS_PATH']!,
         }
+    },
+    argocd: {
+        namespace: process.env['ARGOCD_NAMESPACE']!,
     }
 }
