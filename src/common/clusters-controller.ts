@@ -15,7 +15,7 @@ export class ClustersController extends Operator {
 
     protected async init(): Promise<void> { 
         logger.info('ArgoCD Clusters Controller starting...')
-        await this.processing()
+        this.cron.now()
         this.cron.start()
     }
 
