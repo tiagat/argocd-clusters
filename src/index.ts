@@ -4,7 +4,7 @@ import logger from './logger'
 const controller = new ClustersController(logger)
 
 function gracefulShutdown(reason: string) {
-    logger.info(`Shutting down because of ${reason}`)
+    logger.info(`Received ${reason} signal. Shutting down...`)
     controller.stop()
     process.exit(0);
 }

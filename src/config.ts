@@ -15,5 +15,8 @@ if (missedEnvironmentVariables.length > 0) throw new Error(`${missedEnvironmentV
 export default {
     logger: {
         level: process.env['LOG_LEVEL'] as Level,
+    },
+    cron: {
+        expression: process.env['CRON_EXPRESSION']!,
     }
 }
