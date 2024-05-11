@@ -34,7 +34,7 @@ export class ClustersController extends Operator {
 
     async processing() {
         try {
-            const secrets = this.secretsManager.getClusterSecrets()
+            const awsSecrets = this.secretsManager.getClusterSecrets()
         } catch (error) {
             logger.error(error)
         } 

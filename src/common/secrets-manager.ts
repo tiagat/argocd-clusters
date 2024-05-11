@@ -1,11 +1,10 @@
 import { SecretsManagerClient, ListSecretsCommand, ListSecretsCommandInput, GetSecretValueCommand, SecretListEntry } from "@aws-sdk/client-secrets-manager";
 import { plainToInstance } from 'class-transformer'
 import { validate } from 'class-validator';
-import { ClusterSecret } from './interfaces';
+import { ClusterSecret } from './secrets-interface';
 
 import config from '~/config';
 import logger from '~/logger';
-import { error } from "console";
 
 const commandParams: ListSecretsCommandInput = {
     IncludePlannedDeletion: false,
