@@ -1,3 +1,5 @@
+import "reflect-metadata";
+
 import { ClustersController } from './common/clusters-controller'
 import logger from './logger'
 
