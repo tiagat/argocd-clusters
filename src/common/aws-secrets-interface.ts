@@ -33,3 +33,9 @@ export class ClusterSecret {
     config!: ClusterSecretConfig;
 
 }
+
+
+export interface ClusterMetadata {
+    secret: ClusterSecret;
+    version: string;
+}

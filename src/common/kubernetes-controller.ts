@@ -1,18 +1,18 @@
 import Operator, { OperatorLogger } from '@dot-i/k8s-operator'
 import cron, { ScheduledTask } from 'node-cron'
-import { SecretManager } from './secrets-manager';
+import { AWSSecretManager } from './aws-secrets-manager';
 
 import logger from '~/logger'
 import config from '~/config'
 
-export class ClustersController extends Operator {
+export class KubernetesController extends Operator {
 
     private cron: ScheduledTask;
-    private secretsManager: SecretManager;
+    private secretsManager: AWSSecretManager;
 
     constructor(logger: OperatorLogger) {
         super(logger);
-        this.secretsManager = new SecretManager()
+        this.secretsManager = new AWSSecretManager()
         this.cron = cron.schedule(
             config.cron.expression, 
             this.processing.bind(this), 

@@ -1,7 +1,8 @@
+import { randomUUID } from 'node:crypto';
 import { SecretsManagerClient, ListSecretsCommand, ListSecretsCommandInput, GetSecretValueCommand, SecretListEntry } from "@aws-sdk/client-secrets-manager";
 import { plainToInstance } from 'class-transformer'
 import { validate } from 'class-validator';
-import { ClusterSecret } from './secrets-interface';
+import { ClusterSecret, ClusterMetadata } from './aws-secrets-interface';
 
 import config from '~/config';
 import logger from '~/logger';
@@ -17,7 +18,7 @@ const commandParams: ListSecretsCommandInput = {
     ]
 }
 
-export class SecretManager {
+export class AWSSecretManager {
 
     private client = new SecretsManagerClient({ region: config.aws.region });
     private command = new ListSecretsCommand(commandParams);
@@ -46,7 +47,7 @@ export class SecretManager {
             const errors = await validate(secret)
         
             if (errors.length) {
-                logger.error(`.. ${name} - contain invalid JSON`)
+                logger.error(`.. ${name} - contain invalid value`)
                 return false;
             }
 
@@ -66,13 +67,23 @@ export class SecretManager {
         return secretValue;
     }
 
-    async getClusterSecrets(): Promise<ClusterSecret[]> {
-        const clusters: ClusterSecret[] = []
+    private getSecretVersion(secret: SecretListEntry): string{
+        if (!secret.SecretVersionsToStages) return randomUUID();
+        for (const [key, value] of Object.entries(secret.SecretVersionsToStages)) {
+            if (value.includes('AWSCURRENT')) return key;
+        }
+        return randomUUID();
+    }
+
+    async getClusterSecrets(): Promise<ClusterMetadata[]> {
+        const clusters: ClusterMetadata[] = []
         const secrets =  await this.getSecrets()
-        for (const secret of secrets) {
-            const secretValue = await this.getSecretValue(secret);
-            if (await this.validateSecret(secret.Name, secretValue)) {
-                clusters.push(this.parseSecret(secretValue))
+        for (const awsSecret of secrets) {
+            const awsSecretValue = await this.getSecretValue(awsSecret);
+            if (await this.validateSecret(awsSecret.Name, awsSecretValue)) {
+                const secret = this.parseSecret(awsSecretValue)
+                const version = this.getSecretVersion(awsSecret)
+                clusters.push({ secret, version })
             }
         }
         return clusters

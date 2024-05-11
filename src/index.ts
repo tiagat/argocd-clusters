@@ -1,9 +1,9 @@
 import "reflect-metadata";
 
-import { ClustersController } from './common/clusters-controller'
+import { KubernetesController } from './common/kubernetes-controller'
 import logger from './logger'
 
-const controller = new ClustersController(logger)
+const controller = new KubernetesController(logger)
 
 function gracefulShutdown(reason: string) {
     logger.info(`Received ${reason} signal. Shutting down...`)
