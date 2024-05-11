@@ -3,6 +3,6 @@ import logger from '../logger'
 
 export class ClustersController extends Operator {
     protected async init(): Promise<void> { 
-        logger.info('ArgoCD Clusters Controller initialization')
+        logger.info('ArgoCD Clusters Controller starting...')
     }
 }
