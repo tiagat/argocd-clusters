@@ -1,6 +1,15 @@
-import { KubeConfig, CoreV1Api } from '@kubernetes/client-node';
+import { KubeConfig, CoreV1Api, V1Secret } from '@kubernetes/client-node';
 
 import config from '~/config';
+import { ClusterMetadata } from './interfaces';
+import logger from '~/logger';
+
+const AWS_SECRET_VERSION_KEY = 'aws-secret-version'
+
+export interface SecretInfo {
+    name: string;
+    version: string;
+}
 
 export class Kubernetes {
 
@@ -12,12 +21,11 @@ export class Kubernetes {
         this.k8s = kc.makeApiClient(CoreV1Api);
     }
 
-    async getClusterSecrets() {
-        const namespace = config.argocd.namespace;
+    async getClusterSecrets(): Promise<SecretInfo[]> {
         const timeoutSeconds = 5;
         const labelSelector = 'argocd.argoproj.io/secret-type=cluster'
         const secrets = await this.k8s.listNamespacedSecret(
-            namespace, 
+            config.argocd.namespace, 
             undefined, 
             undefined, 
             undefined, 
@@ -31,6 +39,56 @@ export class Kubernetes {
             undefined,
             undefined
         );
-        return await Promise.resolve([]);
+        const secretsList: SecretInfo[] = secrets.body.items.map(item => ({
+            name: item.metadata?.name || '',
+            version: item.metadata?.annotations?.[AWS_SECRET_VERSION_KEY] || ''
+        }));
+
+        return secretsList
+    }
+
+    secretBody(clusterSecret: ClusterMetadata): V1Secret {
+        const body: V1Secret = {
+            metadata: {
+                name: clusterSecret.secret.name,
+                labels: { 'argocd.argoproj.io/secret-type': 'cluster' },
+                annotations: { [AWS_SECRET_VERSION_KEY]: clusterSecret.version }
+            },
+            data: {
+                name: Buffer.from(clusterSecret.secret.name).toString('base64'),
+                server: Buffer.from(clusterSecret.secret.server).toString('base64'),
+                config: Buffer.from(JSON.stringify(clusterSecret.secret.config, null, 4)).toString('base64'),
+            }
+        }
+
+        return body
+    }
+
+    async createSecret(clusterSecret: ClusterMetadata) {
+        await this.k8s.createNamespacedSecret(
+            config.argocd.namespace, 
+            this.secretBody(clusterSecret)
+        )
+    }
+
+    async updateSecret(clusterSecret: ClusterMetadata) {
+        const body = this.secretBody(clusterSecret)
+        try {
+            await this.k8s.replaceNamespacedSecret(
+                clusterSecret.secret.name, 
+                config.argocd.namespace, 
+                body
+            )
+        } catch (error) {
+            logger.error({ error }, `Failed to update secret: ${clusterSecret.secret.name}`)
+        }
+    }
+
+
+    async deleteSecret(secretName: string) {
+        await this.k8s.deleteNamespacedSecret(
+            secretName, 
+            config.argocd.namespace
+        )
     }
 }

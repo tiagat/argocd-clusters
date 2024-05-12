@@ -34,7 +34,6 @@ export class SecretManager {
         logger.info('Scan AWS Secrets Manager')
         const response = await this.client.send(this.command);
         const secrets = response.SecretList ? response.SecretList : [];
-        logger.info(`Founded ${secrets.length} secrets`)
         return secrets;
     }
 
