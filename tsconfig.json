@@ -23,6 +23,7 @@
       "~/*": ["./src/*"]
     },
     "outDir": "./dist",
+    "rootDir": "./src",
     "noEmit": true,
     "isolatedModules": true,
     "checkJs": false,
