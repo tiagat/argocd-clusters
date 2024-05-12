@@ -37,7 +37,7 @@ export class Controller extends Operator {
 
     async processing() {
         try {
-            const awsSecrets = this.secretsManager.getClusterSecrets()
+            const awsSecrets = this.secretsManager.scanStoredSecrets()
             const k8sSecrets = this.kubernetes.getClusterSecrets()
         } catch (error) {
             logger.error(error)
