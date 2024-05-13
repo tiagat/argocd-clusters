@@ -12,7 +12,7 @@ const commandParams: ListSecretsCommandInput = {
     Filters: [
         { 
             Key: "name", 
-            Values: [config.aws.secrets.path] 
+            Values: [config.aws.secrets.prefix] 
         },
     ]
 }

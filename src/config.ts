@@ -24,7 +24,7 @@ export default {
     aws: {
         region: process.env['AWS_REGION']!,
         secrets: {
-            path: process.env['AWS_SECRETS_PATH']!,
+            prefix: process.env['AWS_SECRETS_PREFIX']!,
         }
     },
     argocd: {
