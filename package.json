@@ -8,17 +8,24 @@
   },
   "scripts": {
     "build": "tsc --project ./tsconfig.build.json && tsc-alias",
-    "start": "ts-node -r tsconfig-paths/register ./src/index.ts"
+    "start": "ts-node -r tsconfig-paths/register ./src/index.ts",
+    "eslint": "eslint ./src/**"
   },
   "author": "Ruslan Sakal",
   "license": "ISC",
   "devDependencies": {
+    "@eslint/js": "^9.14.0",
     "@types/node": "^20.12.11",
     "@types/node-cron": "^3.0.11",
+    "eslint": "^9.14.0",
+    "eslint-config-prettier": "^9.1.0",
+    "globals": "^15.11.0",
+    "prettier": "^3.3.3",
     "ts-node": "^10.9.2",
     "tsc-alias": "^1.8.9",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^8.12.2"
   },
   "dependencies": {
     "@aws-sdk/client-secrets-manager": "^3.574.0",
