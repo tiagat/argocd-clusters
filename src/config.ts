@@ -7,27 +7,27 @@ import type { Level } from 'pino';
 config({ path: path.join(__dirname, '..', process.env['NODE_ENV'] === 'test' ? '.env.test' : '.env') });
 
 const missedEnvironmentVariables = Object.keys(parse(readFileSync(path.join(__dirname, '..', '.env.example')))).filter(
-    (exampleKey) => !process.env[exampleKey]
-  );
+  (exampleKey) => !process.env[exampleKey]
+);
 if (missedEnvironmentVariables.length > 0) throw new Error(`${missedEnvironmentVariables.join(', ')} not defined`);
 
 const cronExpression = process.env['CRON_EXPRESSION']!;
 if (!validate(cronExpression)) throw new Error(`Invalid cron expression: ${cronExpression}`);
 
 export default {
-    logger: {
-        level: process.env['LOG_LEVEL'] as Level,
+  logger: {
+    level: process.env['LOG_LEVEL'] as Level,
+  },
+  cron: {
+    expression: cronExpression,
+  },
+  aws: {
+    region: process.env['AWS_REGION']!,
+    secrets: {
+      prefix: process.env['AWS_SECRETS_PREFIX']!,
     },
-    cron: {
-        expression: cronExpression,
-    },
-    aws: {
-        region: process.env['AWS_REGION']!,
-        secrets: {
-            prefix: process.env['AWS_SECRETS_PREFIX']!,
-        }
-    },
-    argocd: {
-        namespace: process.env['ARGOCD_NAMESPACE']!,
-    }
-}
+  },
+  argocd: {
+    namespace: process.env['ARGOCD_NAMESPACE']!,
+  },
+};
