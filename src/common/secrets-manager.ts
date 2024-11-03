@@ -1,6 +1,6 @@
 import { GetSecretValueCommand, ListSecretsCommand, ListSecretsCommandInput, SecretListEntry, SecretsManagerClient } from '@aws-sdk/client-secrets-manager';
 import { plainToInstance } from 'class-transformer';
-import { validate } from 'class-validator';
+import { validate, ValidatorOptions } from 'class-validator';
 import { ClusterMetadata, ClusterSecret } from './interfaces';
 
 import config from '~/config';
@@ -75,7 +75,14 @@ export class SecretManager {
   }
 
   async validateSecret(awsSecret: SecretListEntry, clusterSecret: ClusterSecret): Promise<boolean> {
-    const errors = await validate(clusterSecret);
+    const validatorOptions: ValidatorOptions = {
+      validationError: {
+        target: false,
+        value: false
+      }
+    }
+    const errors = await validate(clusterSecret, validatorOptions);
+
     if (errors.length) {
       logger.error(errors, `validate: ${awsSecret.Name} - contain invalid value`)
       return false;
