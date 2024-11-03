@@ -1,7 +1,7 @@
-import { SecretsManagerClient, ListSecretsCommand, ListSecretsCommandInput, GetSecretValueCommand, SecretListEntry } from '@aws-sdk/client-secrets-manager';
+import { GetSecretValueCommand, ListSecretsCommand, ListSecretsCommandInput, SecretListEntry, SecretsManagerClient } from '@aws-sdk/client-secrets-manager';
 import { plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
-import { ClusterSecret, ClusterMetadata } from './interfaces';
+import { ClusterMetadata, ClusterSecret } from './interfaces';
 
 import config from '~/config';
 import logger from '~/logger';
@@ -32,8 +32,7 @@ export class SecretManager {
   private async getAwsSecrets(): Promise<SecretListEntry[]> {
     logger.info('Scan AWS Secrets Manager');
     const response = await this.client.send(this.command);
-    const secrets = response.SecretList ? response.SecretList : [];
-    return secrets;
+    return response.SecretList ? response.SecretList : [];
   }
 
   private async getClustersSecrets(awsSecretsList: SecretListEntry[]): Promise<ClusterMetadata[]> {
@@ -93,7 +92,6 @@ export class SecretManager {
 
   async scanStoredSecrets(): Promise<ClusterMetadata[]> {
     const secrets = await this.getAwsSecrets();
-    const clusters = await this.getClustersSecrets(secrets);
-    return clusters;
+    return await this.getClustersSecrets(secrets);
   }
 }

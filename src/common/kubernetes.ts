@@ -1,4 +1,4 @@
-import { KubeConfig, CoreV1Api, V1Secret } from '@kubernetes/client-node';
+import { CoreV1Api, KubeConfig, V1Secret } from '@kubernetes/client-node';
 
 import config from '~/config';
 import { ClusterMetadata } from './interfaces';
@@ -38,16 +38,14 @@ export class Kubernetes {
       undefined,
       undefined
     );
-    const secretsList: SecretInfo[] = secrets.body.items.map((item) => ({
+    return secrets.body.items.map((item) => ({
       name: item.metadata?.name || '',
       version: item.metadata?.annotations?.[AWS_SECRET_VERSION_KEY] || '',
     }));
-
-    return secretsList;
   }
 
   secretBody(clusterSecret: ClusterMetadata): V1Secret {
-    const body: V1Secret = {
+    return {
       metadata: {
         name: clusterSecret.secret.name,
         labels: { 'argocd.argoproj.io/secret-type': 'cluster' },
@@ -59,8 +57,6 @@ export class Kubernetes {
         config: Buffer.from(JSON.stringify(clusterSecret.secret.config, null, 4)).toString('base64'),
       },
     };
-
-    return body;
   }
 
   async createSecret(clusterSecret: ClusterMetadata) {

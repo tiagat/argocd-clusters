@@ -7,12 +7,14 @@ export default [
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
   {
+    ignores: ['node_modules/**'],
     languageOptions: {
       globals: globals.builtin,
 
     },
     plugins: {
       unicorn: eslintPluginUnicorn,
+      typescript: tseslint
     },
     rules: {
       'no-console': 'error'
