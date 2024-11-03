@@ -84,10 +84,9 @@ export class SecretManager {
     const errors = await validate(clusterSecret, validatorOptions);
 
     if (errors.length) {
-      logger.error(errors, `validate: ${awsSecret.Name} - contain invalid value`)
+      logger.error(errors, `Validation error for secret [${awsSecret.Name}]`);
       return false;
     }
-    logger.info(`validate: ${awsSecret.Name}`);
     return true;
   }
 
