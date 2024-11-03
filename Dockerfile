@@ -17,4 +17,4 @@ RUN npm ci --omit=dev --ignore-scripts
 COPY .env.example /opt/app/
 COPY --from=builder /opt/app/dist/ dist/
 
-# ENTRYPOINT ["node", "/opt/app/dist/index.js"]
+ENTRYPOINT ["node", "/opt/app/dist/index.js"]
