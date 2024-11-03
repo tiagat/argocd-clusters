@@ -18,7 +18,7 @@ const commandParams: ListSecretsCommandInput = {
 };
 
 export class SecretManager {
-  private client = new SecretsManagerClient({ region: config.aws.region });
+  private client = new SecretsManagerClient({ region: config.aws.region, maxAttempts: 3 });
   private command = new ListSecretsCommand(commandParams);
 
   private getSecretVersion(secret: SecretListEntry): string | null {
