@@ -5,9 +5,9 @@ import logger from './logger';
 
 const controller = new Controller(logger);
 
-function gracefulShutdown(reason: string) {
+async function gracefulShutdown(reason: string) {
   logger.info(`Received ${reason} signal. Shutting down...`);
-  controller.stop();
+  await controller.stop();
   process.exit(0);
 }
 

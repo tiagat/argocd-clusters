@@ -27,7 +27,7 @@ export class Controller extends Operator {
 
   override async stop(): Promise<void> {
     this.cron.stop();
-    await super.stop();
+    super.stop();
   }
 
   async processing() {
