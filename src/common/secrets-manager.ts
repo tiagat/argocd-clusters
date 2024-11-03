@@ -77,10 +77,10 @@ export class SecretManager {
   async validateSecret(awsSecret: SecretListEntry, clusterSecret: ClusterSecret): Promise<boolean> {
     const errors = await validate(clusterSecret);
     if (errors.length) {
-      logger.error(`.. ${awsSecret.Name} - contain invalid value`);
+      logger.error(errors, `validate: ${awsSecret.Name} - contain invalid value`)
       return false;
     }
-    logger.info(`.. ${awsSecret.Name}`);
+    logger.info(`validate: ${awsSecret.Name}`);
     return true;
   }
 

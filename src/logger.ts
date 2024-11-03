@@ -5,6 +5,14 @@ import config from './config';
 
 const options: LoggerOptions = {
   level: config.logger.level,
+  messageKey: 'msg',
+  errorKey: 'err',
+  transport: {
+    target: 'pino-pretty',
+    options: {
+      colorize: true
+    }
+  }
 };
 
 const stdout = Pino(options);
