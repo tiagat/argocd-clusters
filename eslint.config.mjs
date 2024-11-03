@@ -1,9 +1,12 @@
-import eslint from "@eslint/js";
-import tseslint from "typescript-eslint";
-import eslintConfigPrettier from "eslint-config-prettier";
+import pluginJs from '@eslint/js';
+import tseslint from 'typescript-eslint';
 
 export default [
-  eslint.configs.recommended,
-  eslintConfigPrettier,
-  ...tseslint.configs.recommended
+  pluginJs.configs.recommended,
+  ...tseslint.configs.recommended,
+  {
+    rules: {
+      'no-console': 'error',
+    },
+  },
 ];
