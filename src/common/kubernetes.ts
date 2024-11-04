@@ -48,7 +48,7 @@ export class Kubernetes {
     return {
       metadata: {
         name: clusterSecret.secret.name,
-        labels: { 'argocd.argoproj.io/secret-type': 'cluster' },
+        labels: { 'argocd.argoproj.io/secret-type': 'cluster', ...clusterSecret.secret.labels },
         annotations: { [AWS_SECRET_VERSION_KEY]: clusterSecret.version },
       },
       data: {

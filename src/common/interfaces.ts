@@ -1,16 +1,15 @@
 import { Expose, Exclude } from 'class-transformer';
-import { IsString, IsObject, IsBoolean, IsDefined } from 'class-validator';
+import { IsString, IsObject, IsBoolean, IsOptional, IsNotEmpty, IsNotEmptyObject } from 'class-validator';
 import { Type } from 'class-transformer';
 
 @Exclude()
 export class ClusterSecretClientConfig {
   @Expose()
-  @IsDefined()
   @IsBoolean()
   insecure!: boolean;
 
   @Expose()
-  @IsDefined()
+  @IsNotEmpty()
   @IsString()
   caData!: string;
 }
@@ -18,12 +17,11 @@ export class ClusterSecretClientConfig {
 @Exclude()
 export class ClusterSecretConfig {
   @Expose()
-  @IsDefined()
+  @IsNotEmpty()
   @IsString()
   bearerToken!: string;
 
   @Expose()
-  @IsDefined()
   @IsObject()
   @Type(() => ClusterSecretClientConfig)
   tlsClientConfig!: ClusterSecretClientConfig;
@@ -32,20 +30,24 @@ export class ClusterSecretConfig {
 @Exclude()
 export class ClusterSecret {
   @Expose()
-  @IsDefined()
+  @IsNotEmpty()
   @IsString()
   name!: string;
 
   @Expose()
-  @IsDefined()
+  @IsNotEmpty()
   @IsString()
   server!: string;
 
   @Expose()
-  @IsDefined()
   @IsObject()
   @Type(() => ClusterSecretConfig)
   config!: ClusterSecretConfig;
+
+  @Expose()
+  @IsOptional()
+  @IsObject()
+  labels!: Record<string, string>;
 }
 
 export interface ClusterMetadata {
