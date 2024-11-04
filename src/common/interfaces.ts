@@ -1,5 +1,5 @@
 import { Expose, Exclude } from 'class-transformer';
-import { IsString, IsObject, IsBoolean, IsOptional, IsNotEmpty, IsNotEmptyObject } from 'class-validator';
+import { IsString, IsObject, IsBoolean, IsOptional, IsNotEmpty } from 'class-validator';
 import { Type } from 'class-transformer';
 
 @Exclude()
