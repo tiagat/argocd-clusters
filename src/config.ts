@@ -15,6 +15,7 @@ const cronExpression = process.env['CRON_EXPRESSION']!;
 if (!validate(cronExpression)) throw new Error(`Invalid cron expression: ${cronExpression}`);
 
 export default {
+  port: 3000,
   logger: {
     level: process.env['LOG_LEVEL'] as Level
   },
