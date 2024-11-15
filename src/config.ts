@@ -16,18 +16,18 @@ if (!validate(cronExpression)) throw new Error(`Invalid cron expression: ${cronE
 
 export default {
   logger: {
-    level: process.env['LOG_LEVEL'] as Level,
+    level: process.env['LOG_LEVEL'] as Level
   },
   cron: {
-    expression: cronExpression,
+    expression: cronExpression
   },
   aws: {
     region: process.env['AWS_REGION']!,
     secrets: {
-      prefix: process.env['AWS_SECRETS_PREFIX']!,
-    },
+      prefix: process.env['AWS_SECRETS_PREFIX']!
+    }
   },
   argocd: {
-    namespace: process.env['ARGOCD_NAMESPACE']!,
-  },
+    namespace: process.env['ARGOCD_NAMESPACE']!
+  }
 };

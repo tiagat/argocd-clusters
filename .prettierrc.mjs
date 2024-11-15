@@ -1,7 +1,7 @@
 const config = {
     parser: 'typescript',
     printWidth: 160,
-    trailingComma: 'es5',
+    trailingComma: 'none',
     tabWidth: 2,
     semi: true,
     singleQuote: true,

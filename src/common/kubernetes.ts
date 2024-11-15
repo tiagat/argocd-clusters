@@ -40,7 +40,7 @@ export class Kubernetes {
     );
     return secrets.body.items.map((item) => ({
       name: item.metadata?.name || '',
-      version: item.metadata?.annotations?.[AWS_SECRET_VERSION_KEY] || '',
+      version: item.metadata?.annotations?.[AWS_SECRET_VERSION_KEY] || ''
     }));
   }
 
@@ -49,13 +49,13 @@ export class Kubernetes {
       metadata: {
         name: clusterSecret.secret.name,
         labels: { 'argocd.argoproj.io/secret-type': 'cluster', ...clusterSecret.secret.labels },
-        annotations: { [AWS_SECRET_VERSION_KEY]: clusterSecret.version },
+        annotations: { [AWS_SECRET_VERSION_KEY]: clusterSecret.version }
       },
       data: {
         name: Buffer.from(clusterSecret.secret.name).toString('base64'),
         server: Buffer.from(clusterSecret.secret.server).toString('base64'),
-        config: Buffer.from(JSON.stringify(clusterSecret.secret.config, null, 4)).toString('base64'),
-      },
+        config: Buffer.from(JSON.stringify(clusterSecret.secret.config, null, 4)).toString('base64')
+      }
     };
   }
 

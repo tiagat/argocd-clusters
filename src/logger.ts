@@ -24,7 +24,7 @@ const logger: Pick<BaseLogger, Level> = {
   debug: stdout.debug.bind(stdout),
   warn: stdout.warn.bind(stdout),
   error: stderr.error.bind(stderr),
-  fatal: stderr.fatal.bind(stderr),
+  fatal: stderr.fatal.bind(stderr)
 };
 
 export default logger;

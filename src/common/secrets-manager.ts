@@ -12,9 +12,9 @@ const commandParams: ListSecretsCommandInput = {
   Filters: [
     {
       Key: 'name',
-      Values: [config.aws.secrets.prefix],
-    },
-  ],
+      Values: [config.aws.secrets.prefix]
+    }
+  ]
 };
 
 export class SecretManager {
@@ -80,7 +80,7 @@ export class SecretManager {
         target: false,
         value: false
       }
-    }
+    };
     const errors = await validate(clusterSecret, validatorOptions);
 
     if (errors.length) {
