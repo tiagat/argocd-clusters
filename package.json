@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "engines": {
-    "node": ">=20.12.2"
+    "node": ">=22.11.0"
   },
   "scripts": {
     "build": "tsc --project ./tsconfig.build.json && tsc-alias",

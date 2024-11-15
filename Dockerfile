@@ -1,4 +1,4 @@
-FROM node:20.12.2-alpine AS builder
+FROM node:22.11.0-alpine AS builder
 
 RUN mkdir -p /opt/app/
 COPY package.json package-lock.json .env.example tsconfig.json tsconfig.build.json /opt/app/
@@ -9,7 +9,7 @@ WORKDIR /opt/app/
 RUN npm ci --ignore-scripts
 RUN npm run build
 
-FROM node:20.12.2-alpine
+FROM node:22.11.0-alpine
 
 COPY package.json package-lock.json /opt/app/
 WORKDIR /opt/app/
