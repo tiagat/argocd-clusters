@@ -17,5 +17,5 @@ jobs:
         node-version: 22.x
         cache: 'npm'
     - run: npm ci
-    - run: npm eslint
+    - run: npm run eslint
     - run: npm run build
