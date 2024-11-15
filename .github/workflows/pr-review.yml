@@ -1,4 +1,4 @@
-name: Node.js CI
+name: GitHub Actions
 
 on:
   pull_request:
@@ -17,5 +17,5 @@ jobs:
         node-version: 22.x
         cache: 'npm'
     - run: npm ci
-    - run: npm eslint
+    - run: npm run eslint
     - run: npm run build
