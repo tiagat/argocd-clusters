@@ -12,6 +12,9 @@ AWS Secrets scanned by name prefix and each secret should contain valid JSON:
 {
     "name": "docker-desktop",
     "server": "https://kubernetes.docker.internal:6443",
+    "labels": {
+      "environment": "production"
+    },
     "config": {
         "bearerToken": "LS0tLS ... QVRFLS0tLS0K",
         "tlsClientConfig": {
