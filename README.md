@@ -24,3 +24,4 @@ AWS Secrets scanned by name prefix and each secret should contain valid JSON:
     }
 }
 ```
+
